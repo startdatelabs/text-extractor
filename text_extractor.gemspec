@@ -33,7 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sw_ruby_tika_app', '1.14.0'
   spec.add_runtime_dependency 'docsplit'
   spec.add_runtime_dependency 'posix-spawn'
-  spec.add_runtime_dependency 'doc_ripper'
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"

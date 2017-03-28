@@ -1,4 +1,12 @@
-poppler-utils poppler-data libreoffice graphicsmagick tesseract-ocr tesseract-ocr-eng antiword
+poppler-utils
+poppler-data
+libreoffice
+graphicsmagick
+tesseract-ocr
+tesseract-ocr-eng
+antiword
+unrtf
+unzip
 
 # TextExtractor
 

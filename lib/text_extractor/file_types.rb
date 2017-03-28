@@ -11,7 +11,7 @@ module TextExtractor
     RTF = 'rtf'
     ODT = 'odt'
 
-    COMMON_TYPES = [PDF, PNG, DOC, DOCX, RTF, ODT]
+    COMMON_TYPES = [PDF, PNG, DOC, DOCX, RTF, ODT, TXT]
 
     def detect_file_type(original_file_path)
       extname = ::File.extname(original_file_path).downcase

@@ -28,5 +28,23 @@ module TextExtractor
     def run_shell(command)
       ::POSIX::Spawn::Child.new(command, timeout: 20, pgroup_kill: true)
     end
+
+    def temp_folder
+      @temp_folder ||= begin
+        path = "./tmp/temp_resumes"
+        FileUtils.mkdir_p(path)
+        path
+      end
+    end
+
+    def temp_folder_for_parsed
+      folder = File.join(temp_folder, SecureRandom.hex(10))
+      temp_folders << folder
+      folder
+    end
+
+    def temp_txt_file
+      File.join(temp_folder, %{#{ SecureRandom.hex(10) }.txt})
+    end
   end
 end

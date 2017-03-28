@@ -19,11 +19,11 @@ private
     def extract_as_text_from_pdf(original_file_path)
       run_shell(%{pdftotext #{ to_shell(original_file_path) } #{ to_shell(text_file_path) }})
 
-      extract_from_txt(text_file_path)
+      extract_text_from_txt(text_file_path)
     end
 
     def extract_to_ppm_from_pdf(original_file_path)
-      output_folder = "./tmp/#{ SecureRandom.hex(10) }"
+      output_folder = temp_folder_for_parsed
       run_shell(%{pdftoppm -r 300 -gray #{ to_shell(original_file_path) } #{ output_folder }})
       ::Dir["#{ output_folder }*"]
     end
@@ -42,7 +42,7 @@ private
     end
 
     def extract_images(_file_path)
-      output_file = "./tmp/#{ SecureRandom.hex(10) }"
+      output_file = temp_folder_for_parsed
       run_shell(%{pdfimages #{ _file_path } #{ output_file } })
       ::Dir["#{output_file}*"]
     end

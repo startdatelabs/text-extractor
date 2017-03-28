@@ -1,7 +1,7 @@
 require 'mkmf'
 
-DEPENDENCES_UBUNTU = %w{poppler-utils poppler-data libreoffice graphicsmagick tesseract-ocr tesseract-ocr-eng antiword unrtf unzip odt2txt ghostscript pdftk}
-DEPENDENCES_MAC = %w{poppler graphicsmagick tesseract antiword unrtf unzip odt2txt ghostscript}
+DEPENDENCES_UBUNTU = %w{poppler-utils poppler-data libreoffice graphicsmagick tesseract-ocr tesseract-ocr-eng antiword unrtf unzip odt2txt ghostscript pdftk perl}
+DEPENDENCES_MAC = %w{poppler graphicsmagick tesseract antiword unrtf unzip odt2txt ghostscript perl}
 
 puts '****************'
 

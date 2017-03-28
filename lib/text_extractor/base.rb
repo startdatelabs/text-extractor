@@ -29,12 +29,16 @@ module TextExtractor
 
     DOC_SPLIT_TIMEOUT = 30.seconds
 
-    attr_accessor :file_path, :text_file_path
+    attr_accessor :file_path, :text_file_path, :temp_folders
 
     def initialize(original_file_path)
-      original_file_path = fix_file_name(original_file_path)
-      @file_path      = original_file_path
-      @text_file_path = "#{ SecureRandom.hex(10) }.txt"
+      temp_file = File.join(temp_folder, ::File.basename(original_file_path))
+      FileUtils.cp(original_file_path, temp_file)
+
+      temp_file = fix_file_name(temp_file)
+      @file_path      = temp_file
+      @text_file_path = temp_txt_file
+      @temp_folders = []
     end
 
     def extract
@@ -46,14 +50,18 @@ module TextExtractor
       parsed_text = escape_text(parsed_text)
       raise TextExtractor::FileEmpty if empty_result?(parsed_text)
       parsed_text
+    ensure
+      File.delete(file_path) if File.exist?(file_path)
+      File.delete(text_file_path) if File.exist?(text_file_path)
+      temp_folders.each do |folder|
+        ::FileUtils.rm_rf(folder)
+      end
     end
 
     def extract_by_type(file_path, file_type)
       parsed_text = case file_type
       when *COMMON_TYPES
         send(:"extract_text_from_#{file_type}", file_path)
-      when TXT
-        extract_from_txt(file_path, false)
       else
         extract_text_with_complex_tools(file_path)
       end
@@ -67,14 +75,14 @@ module TextExtractor
     end
 
     def extract_text_with_docsplit(file_path)
-      tmp_dir = "tmp/#{ SecureRandom.hex(10) }"
+      tmp_dir = temp_folder_for_parsed
 
       ::Timeout::timeout(DOC_SPLIT_TIMEOUT) do
         ::Docsplit.extract_text(file_path, output: tmp_dir)
       end
 
       text = Dir["#{ tmp_dir }/*.txt"].map do |path|
-        extract_from_txt(path)
+        extract_text_from_txt(path)
       end
 
       ::FileUtils.rm_rf(tmp_dir)

@@ -2,11 +2,11 @@ module TextExtractor
   module Txt
     extend ActiveSupport::Concern
 
-    def extract_from_txt(_file_path)
+    def extract_from_txt(original_file_path, with_delete = true)
       text = nil
-      if ::File.exists?(_file_path)
-        text = File.read(_file_path).force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
-        File.delete(_file_path)
+      if ::File.exists?(original_file_path)
+        text = File.read(original_file_path).force_encoding("ISO-8859-1").encode("utf-8", replace: nil)
+        File.delete(original_file_path) if with_delete
         text = escape_text(text)
       end
 

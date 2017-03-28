@@ -10,6 +10,7 @@ require 'text_extractor/formats/pdf'
 require 'text_extractor/formats/png'
 require 'text_extractor/formats/txt'
 require 'text_extractor/formats/rtf'
+require 'text_extractor/formats/odt'
 
 module TextExtractor
   class NotSupportExtensionException < Exception; end
@@ -24,6 +25,7 @@ module TextExtractor
     include TextExtractor::Doc
     include TextExtractor::Docx
     include TextExtractor::Rtf
+    include TextExtractor::Odt
 
     DOC_SPLIT_TIMEOUT = 30.seconds
 
@@ -47,8 +49,6 @@ module TextExtractor
     end
 
     def extract_by_type(file_path, file_type)
-      parsed_text = ''
-
       parsed_text = case file_type
       when PDF
         extract_text_from_pdf(file_path)
@@ -60,8 +60,10 @@ module TextExtractor
         extract_text_from_docx(file_path)
       when RTF
         extract_text_from_rtf(file_path)
+      when ODT
+        extract_text_from_odt(file_path)
       when TXT
-        extract_from_txt(file_path)
+        extract_from_txt(file_path, false)
       else
         begin
           extract_text_with_tika_app(file_path)

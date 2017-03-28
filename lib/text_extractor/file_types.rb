@@ -9,6 +9,7 @@ module TextExtractor
     DOC = 'doc'
     DOCX = 'docx'
     RTF = 'rtf'
+    ODT = 'odt'
 
     def detect_file_type(file_path)
       extname = ::File.extname(file_path).downcase
@@ -29,10 +30,10 @@ module TextExtractor
       when /.rtf/i
         RTF
       when /.odt/i
-        DOCX
+        ODT
       when /.txt/i
         line = File.readlines(file_path).first
-        escaped_line = TextExtractor.escape_text(line)
+        escaped_line = escape_text(line)
         if escaped_line =~ /pdf/i
           PDF
         else

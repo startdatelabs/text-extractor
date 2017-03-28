@@ -24,5 +24,9 @@ module TextExtractor
     def to_shell(file_path)
       Shellwords.escape(file_path)
     end
+
+    def run_shell(command)
+      ::POSIX::Spawn::Child.new(command, timeout: 20, pgroup_kill: true)
+    end
   end
 end

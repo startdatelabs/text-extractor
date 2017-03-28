@@ -31,9 +31,9 @@ module TextExtractor
 
     attr_accessor :file_path, :text_file_path
 
-    def initialize(_file_path)
-      _file_path = fix_file_name(_file_path)
-      @file_path      = _file_path
+    def initialize(original_file_path)
+      original_file_path = fix_file_name(original_file_path)
+      @file_path      = original_file_path
       @text_file_path = "#{ SecureRandom.hex(10) }.txt"
     end
 
@@ -50,26 +50,12 @@ module TextExtractor
 
     def extract_by_type(file_path, file_type)
       parsed_text = case file_type
-      when PDF
-        extract_text_from_pdf(file_path)
-      when IMAGE
-        extract_text_from_png(file_path)
-      when DOC
-        extract_text_from_doc(file_path)
-      when DOCX
-        extract_text_from_docx(file_path)
-      when RTF
-        extract_text_from_rtf(file_path)
-      when ODT
-        extract_text_from_odt(file_path)
+      when *COMMON_TYPES
+        send(:"extract_text_from_#{file_type}", file_path)
       when TXT
         extract_from_txt(file_path, false)
       else
-        begin
-          extract_text_with_tika_app(file_path)
-        rescue Exception
-          extract_text_with_docsplit(file_path)
-        end
+        extract_text_with_complex_tools(file_path)
       end
 
       parsed_text
@@ -94,6 +80,14 @@ module TextExtractor
       ::FileUtils.rm_rf(tmp_dir)
 
       text.join('')
+    end
+
+    def extract_text_with_complex_tools(file_path)
+      begin
+        extract_text_with_tika_app(file_path)
+      rescue => e
+        extract_text_with_docsplit(file_path)
+      end
     end
   end
 end

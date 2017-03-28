@@ -5,24 +5,22 @@ module TextExtractor
     DOCUMENT = 'document'
     PDF = 'pdf'
     TXT = 'txt'
-    IMAGE = 'image'
+    PNG = 'png'
     DOC = 'doc'
     DOCX = 'docx'
     RTF = 'rtf'
     ODT = 'odt'
 
-    def detect_file_type(file_path)
-      extname = ::File.extname(file_path).downcase
+    COMMON_TYPES = [PDF, PNG, DOC, DOCX, RTF, ODT]
+
+    def detect_file_type(original_file_path)
+      extname = ::File.extname(original_file_path).downcase
 
       case extname
       when /.pdf/i
         PDF
-      when /.png/i
-        IMAGE
-      when /.jpg/i
-        IMAGE
-      when /.jpeg/i
-        IMAGE
+      when /.png/i, /.jpg/i, /.jpeg/i
+        PNG
       when /.docx/i
         DOCX
       when /.doc/i
@@ -32,7 +30,7 @@ module TextExtractor
       when /.odt/i
         ODT
       when /.txt/i
-        line = File.readlines(file_path).first
+        line = File.readlines(original_file_path).first
         escaped_line = escape_text(line)
         if escaped_line =~ /pdf/i
           PDF

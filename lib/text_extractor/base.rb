@@ -50,6 +50,7 @@ module TextExtractor
 
       parsed_text = extract_by_type(file_path, file_type)
       parsed_text = escape_text(parsed_text)
+      parsed_text = remove_extra_spaces(parsed_text)
       raise TextExtractor::FileEmpty if empty_result?(parsed_text)
       parsed_text
     ensure

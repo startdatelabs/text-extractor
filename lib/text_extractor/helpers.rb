@@ -17,6 +17,10 @@ module TextExtractor
       text.gsub(/\W/, '').empty?
     end
 
+    def remove_extra_spaces(text)
+      text.gsub(/[[:space:]]+/, ' ').strip
+    end
+
     def escape_text(text)
       text.without_non_utf8
     end

@@ -1,3 +1,4 @@
+require 'active_support'
 require 'text_extractor/version'
 require 'text_extractor/base'
 require 'text_extractor/configuration'

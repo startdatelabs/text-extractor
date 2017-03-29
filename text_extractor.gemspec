@@ -33,11 +33,13 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'sw_ruby_tika_app', '1.14.0'
   spec.add_runtime_dependency 'docsplit'
   spec.add_runtime_dependency 'posix-spawn'
+  spec.add_runtime_dependency 'activesupport', '~> 4.2'
 
   spec.add_development_dependency "bundler", "~> 1.14"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "pry-coolline"
 
   spec.extensions << 'ext/extconf.rb'
 end

@@ -4,10 +4,9 @@ DEPENDENCES_UBUNTU = %w{poppler-utils poppler-data libreoffice graphicsmagick te
 DEPENDENCES_MAC = %w{poppler graphicsmagick tesseract antiword unrtf unzip odt2txt ghostscript perl lynx}
 
 puts '****************'
-
 if `uname -a`.include?('Ubuntu')
   dependences = DEPENDENCES_UBUNTU
-  command = 'sudo apt-get install -y'
+  command = "echo '#{ ENV['PASSWORD'] }' | sudo -S apt-get install -y"
   list = `apt list --installed`
 else
   dependences = DEPENDENCES_MAC

@@ -29,7 +29,7 @@ module TextExtractor
     include TextExtractor::Odt
     include TextExtractor::Html
 
-    DOC_SPLIT_TIMEOUT = 30.seconds
+    DOC_SPLIT_TIMEOUT = 30
 
     attr_accessor :file_path, :text_file_path, :temp_folders
 

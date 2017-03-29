@@ -10,8 +10,9 @@ module TextExtractor
     DOCX = 'docx'
     RTF = 'rtf'
     ODT = 'odt'
+    HTML = 'html'
 
-    COMMON_TYPES = [PDF, PNG, DOC, DOCX, RTF, ODT, TXT]
+    COMMON_TYPES = [PDF, PNG, DOC, DOCX, RTF, ODT, TXT, HTML]
 
     def detect_file_type(original_file_path)
       extname = ::File.extname(original_file_path).downcase
@@ -29,6 +30,8 @@ module TextExtractor
         RTF
       when /.odt/i
         ODT
+      when /.htm/i, /.html/i
+        HTML
       when /.txt/i
         line = File.readlines(original_file_path).first
         escaped_line = escape_text(line)

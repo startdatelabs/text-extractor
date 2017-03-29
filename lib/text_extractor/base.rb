@@ -11,6 +11,7 @@ require 'text_extractor/formats/png'
 require 'text_extractor/formats/txt'
 require 'text_extractor/formats/rtf'
 require 'text_extractor/formats/odt'
+require 'text_extractor/formats/html'
 
 module TextExtractor
   class NotSupportExtensionException < Exception; end
@@ -26,6 +27,7 @@ module TextExtractor
     include TextExtractor::Docx
     include TextExtractor::Rtf
     include TextExtractor::Odt
+    include TextExtractor::Html
 
     DOC_SPLIT_TIMEOUT = 30.seconds
 

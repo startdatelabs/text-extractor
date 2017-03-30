@@ -1,14 +1,3 @@
-poppler-utils
-poppler-data
-libreoffice
-graphicsmagick
-tesseract-ocr
-tesseract-ocr-eng
-antiword
-unrtf
-unzip
-odt2txt
-
 # TextExtractor
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/text_extractor`. To experiment with that code, run `bin/console` for an interactive prompt.
@@ -17,17 +6,19 @@ Welcome to your new gem! In this directory, you'll find the files you need to be
 
 Add this line to your application's Gemfile:
 
+On Ubuntu need to set sudo password to env, it require apt-get install
+
 ```ruby
 gem 'text_extractor'
 ```
 
 And then execute:
 
-    $ bundle
+    $ PASSWORD=sudo_password bundle
 
 Or install it yourself as:
 
-    $ gem install text_extractor
+    $ PASSWORD=sudo_password gem install text_extractor
 
 ## Usage
 

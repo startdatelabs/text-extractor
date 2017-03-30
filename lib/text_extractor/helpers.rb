@@ -30,7 +30,11 @@ module TextExtractor
     end
 
     def run_shell(command)
-      ::POSIX::Spawn::Child.new(command, timeout: 20, pgroup_kill: true)
+      result = ::POSIX::Spawn::Child.new(command, timeout: 20, pgroup_kill: true)
+      if result.err =~ /command not found/i || result.err =~ /No such file or directory/i || result.err =~ /currently not installed/i
+        raise TextExtractor::NotInstalledExtension.new(result.err)
+      end
+      result
     end
 
     def temp_folder

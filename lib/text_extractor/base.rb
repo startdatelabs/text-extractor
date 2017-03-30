@@ -16,6 +16,8 @@ require 'text_extractor/formats/html'
 module TextExtractor
   class NotSupportExtensionException < Exception; end
   class FileEmpty < Exception; end
+  class NotInstalledExtension < Exception; end
+  class ExceptionInExtension < Exception; end
 
   class Base
     include TextExtractor::Helpers

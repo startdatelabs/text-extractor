@@ -8,7 +8,7 @@ module TextExtractor
       run_shell(command)
       text = extract_text_from_txt(text_file_path)
 
-      if text.include?('picture data found')
+      if text.length < TextExtractor.configuration.min_text_length && text.include?('picture data found')
         extract_text_with_docsplit(original_file_path)
       else
         text

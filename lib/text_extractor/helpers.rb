@@ -14,15 +14,15 @@ module TextExtractor
     end
 
     def empty_result?(text)
-      text.gsub(/\W/, '').empty?
+      text&.gsub(/\W/, '').blank?
     end
 
     def remove_extra_spaces(text)
-      text.gsub(/[[:space:]]+/, ' ').strip
+      text&.gsub(/[[:space:]]+/, ' ')&.strip
     end
 
     def escape_text(text)
-      text.without_non_utf8
+      text&.without_non_utf8
     end
 
     def to_shell(file_path)

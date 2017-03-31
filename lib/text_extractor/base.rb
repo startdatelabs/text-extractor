@@ -3,15 +3,8 @@ require 'posix/spawn'
 require 'docsplit'
 require 'ruby_tika_app'
 require 'text_extractor/helpers'
-require 'text_extractor/file_types'
-require 'text_extractor/formats/doc'
-require 'text_extractor/formats/docx'
-require 'text_extractor/formats/pdf'
-require 'text_extractor/formats/png'
-require 'text_extractor/formats/txt'
-require 'text_extractor/formats/rtf'
-require 'text_extractor/formats/odt'
-require 'text_extractor/formats/html'
+require 'text_extractor/file_formats'
+
 
 module TextExtractor
   class NotSupportExtensionException < Exception; end
@@ -21,19 +14,22 @@ module TextExtractor
 
   class Base
     include TextExtractor::Helpers
-    include TextExtractor::FileTypes
-    include TextExtractor::Pdf
-    include TextExtractor::Png
-    include TextExtractor::Txt
-    include TextExtractor::Doc
-    include TextExtractor::Docx
-    include TextExtractor::Rtf
-    include TextExtractor::Odt
-    include TextExtractor::Html
+    include TextExtractor::FileFormats
 
     DOC_SPLIT_TIMEOUT = 30
 
     attr_accessor :file_path, :text_file_path, :temp_folders
+
+    def self.processing_formats
+      @processing_formats ||= begin
+        _processing_formats = {}
+        modules = TextExtractor::Base.included_modules.select { |m| m.to_s.include?('::Formats::') }
+        modules.each do |m|
+          _processing_formats.merge!(m.formats)
+        end
+        _processing_formats
+      end
+    end
 
     def initialize(original_file_path)
       temp_file = File.join(temp_folder, ::File.basename(original_file_path))
@@ -48,9 +44,7 @@ module TextExtractor
     def extract
       raise TextExtractor::NotSupportExtensionException.new unless TextExtractor.configuration.allowed_extensions.any? { |a| a =~ ::File.extname(file_path).downcase }
 
-      file_type = detect_file_type(file_path)
-
-      parsed_text = extract_by_type(file_path, file_type)
+      parsed_text = extract_by_type
       parsed_text = escape_text(parsed_text)
       parsed_text = remove_extra_spaces(parsed_text)
       raise TextExtractor::FileEmpty if empty_result?(parsed_text)
@@ -63,12 +57,18 @@ module TextExtractor
       end
     end
 
-    def extract_by_type(file_path, file_type)
-      parsed_text = case file_type
-      when *COMMON_TYPES
-        send(:"extract_text_from_#{file_type}", file_path)
+    private
+
+    def extract_by_type
+      extname = ::File.extname(file_path).downcase
+      postfix_of_method = TextExtractor::Base.processing_formats[extname]
+
+      parsed_text = if TextExtractor::Formats::Pdf.is_pdf_file?(file_path)
+        extract_text_from_pdf(file_path)
+      elsif postfix_of_method
+        send(:"extract_text_from_#{ postfix_of_method }", file_path)
       else
-        extract_text_with_complex_tools(file_path)
+        extract_text_with_docsplit(file_path)
       end
 
       parsed_text

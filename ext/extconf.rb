@@ -1,15 +1,15 @@
 require 'mkmf'
 
-DEPENDENCES_UBUNTU = %w{poppler-utils poppler-data libreoffice graphicsmagick tesseract-ocr tesseract-ocr-eng antiword unrtf unzip odt2txt ghostscript pdftk perl lynx-cur}
-DEPENDENCES_MAC = %w{poppler graphicsmagick tesseract antiword unrtf unzip odt2txt ghostscript perl lynx}
+dependences_ubuntu = %w{poppler-utils poppler-data libreoffice graphicsmagick tesseract-ocr tesseract-ocr-eng antiword unrtf unzip odt2txt ghostscript pdftk perl lynx-cur}
+dependences_mac = %w{poppler graphicsmagick tesseract antiword unrtf unzip odt2txt ghostscript perl lynx}
 
 puts '****************'
 if `uname -a`.include?('Ubuntu')
-  dependences = DEPENDENCES_UBUNTU
+  dependences = dependences_ubuntu
   command = "echo '#{ ENV['PASSWORD'] }' | sudo -S apt-get install -y"
   list = `dpkg -l`
 else
-  dependences = DEPENDENCES_MAC
+  dependences = dependences_mac
   command = 'brew install'
   list = `brew list`
 end

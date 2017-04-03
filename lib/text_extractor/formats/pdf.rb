@@ -10,7 +10,7 @@ module TextExtractor
         if parsed_text.length < TextExtractor.configuration.min_text_length
           # png_pathes = extract_images(original_file_path)
           png_pathes = extract_to_ppm_from_pdf(original_file_path)
-          parsed_text = extract_text_from_png(png_pathes)
+          parsed_text = extract_text_from_image(png_pathes)
         end
 
         parsed_text

@@ -18,7 +18,7 @@ module TextExtractor
 
       private
       def extract_as_text_from_pdf(original_file_path)
-        run_shell(%{pdftotext #{ to_shell(original_file_path) } #{ to_shell(text_file_path) }})
+        run_shell(%{pdftotext -enc UTF-8 #{ to_shell(original_file_path) } #{ to_shell(text_file_path) }})
 
         extract_text_from_txt(text_file_path)
       end

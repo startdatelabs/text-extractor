@@ -29,4 +29,4 @@ module TextExtractor
   end
 end
 
-Dir[File.join(TextExtractor.root, 'lib', 'tasks', '**', '*.rake')].each { |file| load file }
+# Dir[File.join(TextExtractor.root, 'lib', 'tasks', '**', '*.rake')].each { |file| load file }

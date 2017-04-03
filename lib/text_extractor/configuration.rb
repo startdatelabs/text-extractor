@@ -13,9 +13,7 @@ module TextExtractor
         /pdf\Z/i,
         /txt\Z/i,
         /wps\Z/i,
-        # /wpd\Z/i,
-        # /ppt\Z/i,
-        # /pptx\Z/i,
+        /ppt\Z/i, /pptx\Z/i,
         /png\Z/i, /jpg\Z/i, /jpeg\Z/i,
         /pages\Z/i
       ]

@@ -28,5 +28,3 @@ module TextExtractor
     File.dirname __dir__
   end
 end
-
-# Dir[File.join(TextExtractor.root, 'lib', 'tasks', '**', '*.rake')].each { |file| load file }

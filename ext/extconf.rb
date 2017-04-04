@@ -4,18 +4,20 @@ def need_install(version, require_version)
   major, minor, tiny  = version.split('.').map(&:to_i)
   goal_major, goal_minor, goal_tiny  = require_version.split('.').map(&:to_i)
 
-  if goal_major < major
+  if goal_major > major
     true
-  elsif goal_minor < minor
+  elsif goal_minor > minor
     true
-  elsif goal_tiny && goal_tiny < tiny
+  elsif goal_tiny && goal_tiny > tiny
     true
   else
     false
   end
 end
 
+# if ENV['CI'].nil?
 puts '****************'
+
 if `uname -a`.include?('Ubuntu')
   ubuntu_repositories = %w{ppa:libreoffice/ppa}
 
@@ -68,7 +70,7 @@ else
     'unzip' => '6.0_2',
     'odt2txt' => '0.5',
     'ghostscript' => '9.21',
-    'perl' => '5.24.1',
+    'perl' => '5.24.0',
     'lynx' => '2.8.8rel.2_1'
   }
   dependences_cask = {
@@ -101,5 +103,6 @@ else
     end
   end
 end
+# end
 
-create_makefile('dependences')
+create_makefile('dependences') if ENV['SKIP_MAKEFILE'].nil?

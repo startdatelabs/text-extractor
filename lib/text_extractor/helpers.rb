@@ -14,7 +14,7 @@ module TextExtractor
     end
 
     def empty_result?(text)
-      text&.gsub(/\W/, '').blank?
+      string_blank?(text&.gsub(/\W/, ''))
     end
 
     def remove_extra_spaces(text)
@@ -22,7 +22,7 @@ module TextExtractor
     end
 
     def escape_text(text)
-      text&.without_non_utf8
+      without_non_utf8(text)
     end
 
     def to_shell(file_path)
@@ -53,6 +53,14 @@ module TextExtractor
 
     def temp_txt_file
       File.join(temp_folder, %{#{ SecureRandom.hex(10) }.txt})
+    end
+
+    def without_non_utf8(text, replacement = '')
+      text&.encode('UTF-8', invalid: :replace, undef: :replace, replace: replacement)
+    end
+
+    def string_blank?(text)
+      text.nil? || text.empty?
     end
   end
 end

@@ -12,6 +12,13 @@ module TextExtractor
   class NotInstalledExtension < Exception; end
   class ExceptionInExtension < Exception; end
 
+  SUCESS_STATUS = 200                   # 200 success
+  WRONG_PARAMS_STATUS = 400             # 400 wrong params
+  NOT_SUPPORT_EXTNAME = 512             # 512 Not support extname
+  FILE_EMPTY_STATUS = 513               # 513 File empty
+  NOT_INSTALLED_EXTENSION_STATUS = 514  # 514 Not installed extension
+  UNKNOWN_ERRROR_STATUS = 515           # 515 Unknown error
+
   class Base
     include TextExtractor::Helpers
     include TextExtractor::FileFormats

@@ -5,7 +5,7 @@ module TextExtractor
       extend ActiveSupport::Concern
 
       def extract_text_from_docx(original_file_path)
-        self.text_file_path = original_file_path.gsub(/.docx/, '.txt')
+        self.text_file_path = original_file_path.gsub(/\.docx/, '.txt')
         command = %{#{ TextExtractor.root }/ext/docx2txt.sh #{ to_shell(original_file_path) }}
 
         run_shell(command)

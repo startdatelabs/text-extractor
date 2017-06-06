@@ -1,7 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'posix/spawn'
 require 'docsplit'
-require 'ruby_tika_app'
 require 'text_extractor/helpers'
 require 'text_extractor/file_formats'
 
@@ -25,7 +24,7 @@ module TextExtractor
 
     DOC_SPLIT_TIMEOUT = 30
 
-    attr_accessor :file_path, :text_file_path, :temp_folders
+    attr_accessor :file_path, :text_file_path
 
     def self.processing_formats
       @processing_formats ||= begin
@@ -45,7 +44,6 @@ module TextExtractor
       temp_file = fix_file_name(temp_file)
       @file_path      = temp_file
       @text_file_path = temp_txt_file
-      @temp_folders = []
     end
 
     def extract
@@ -55,13 +53,12 @@ module TextExtractor
       parsed_text = escape_text(parsed_text)
       parsed_text = remove_extra_spaces(parsed_text)
       raise TextExtractor::FileEmpty if empty_result?(parsed_text)
+
+      # text_for_validate = remove_extra_spaces(parsed_text)
+      # raise TextExtractor::FileEmpty if empty_result?(text_for_validate)
       parsed_text
     ensure
-      File.delete(file_path) if File.exist?(file_path)
-      File.delete(text_file_path) if File.exist?(text_file_path)
-      temp_folders.each do |folder|
-        ::FileUtils.rm_rf(folder)
-      end
+      ::FileUtils.rm_rf(temp_folder)
     end
 
     private
@@ -81,11 +78,6 @@ module TextExtractor
       parsed_text
     end
 
-    def extract_text_with_tika_app(file_path)
-      parsed_text = ::RubyTikaApp.new(file_path).to_text
-      parsed_text
-    end
-
     def extract_text_with_docsplit(file_path)
       tmp_dir = temp_folder_for_parsed
 
@@ -100,14 +92,6 @@ module TextExtractor
       ::FileUtils.rm_rf(tmp_dir)
 
       text.join('')
-    end
-
-    def extract_text_with_complex_tools(file_path)
-      begin
-        extract_text_with_tika_app(file_path)
-      rescue => e
-        extract_text_with_docsplit(file_path)
-      end
     end
   end
 end

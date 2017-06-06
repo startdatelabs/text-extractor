@@ -40,6 +40,7 @@ module TextExtractor
     def temp_folder
       @temp_folder ||= begin
         path = "./tmp/temp_resumes"
+        path = File.join(path, SecureRandom.hex(10))
         FileUtils.mkdir_p(path)
         path
       end
@@ -47,7 +48,7 @@ module TextExtractor
 
     def temp_folder_for_parsed
       folder = File.join(temp_folder, SecureRandom.hex(10))
-      temp_folders << folder
+      FileUtils.mkdir_p(folder)
       folder
     end
 

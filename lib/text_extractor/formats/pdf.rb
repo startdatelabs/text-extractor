@@ -25,7 +25,7 @@ module TextExtractor
 
       def extract_to_ppm_from_pdf(original_file_path)
         output_folder = temp_folder_for_parsed
-        run_shell(%{pdftoppm -r 300 -gray -f 5 #{ to_shell(original_file_path) } #{ File.join(output_folder, 'temp_file') }})
+        run_shell(%{pdftoppm -r 300 -gray #{ to_shell(original_file_path) } #{ File.join(output_folder, 'temp_file') }})
         ::Dir["#{ output_folder }/*"]
       end
 

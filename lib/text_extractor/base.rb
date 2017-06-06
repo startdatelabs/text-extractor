@@ -51,11 +51,9 @@ module TextExtractor
 
       parsed_text = extract_by_type
       parsed_text = escape_text(parsed_text)
-      parsed_text = remove_extra_spaces(parsed_text)
-      raise TextExtractor::FileEmpty if empty_result?(parsed_text)
 
-      # text_for_validate = remove_extra_spaces(parsed_text)
-      # raise TextExtractor::FileEmpty if empty_result?(text_for_validate)
+      text_for_validate = remove_extra_spaces(parsed_text)
+      raise TextExtractor::FileEmpty if empty_result?(text_for_validate)
       parsed_text
     ensure
       ::FileUtils.rm_rf(temp_folder)

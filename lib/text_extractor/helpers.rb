@@ -57,7 +57,8 @@ module TextExtractor
     end
 
     def without_non_utf8(text, replacement = '')
-      text&.encode('UTF-8', invalid: :replace, undef: :replace, replace: replacement)
+      text.to_s.encode('ASCII', invalid: :replace, undef: :replace, replace: ' ').force_encoding('UTF-8')
+      # text&.encode('UTF-8', invalid: :replace, undef: :replace, replace: replacement)
     end
 
     def string_blank?(text)

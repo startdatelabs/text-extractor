@@ -29,8 +29,8 @@ module TextExtractor
       Shellwords.escape(file_path)
     end
 
-    def run_shell(command)
-      result = ::POSIX::Spawn::Child.new(command, timeout: 20, pgroup_kill: true)
+    def run_shell(command, timeout = 20)
+      result = ::POSIX::Spawn::Child.new(command, timeout: timeout, pgroup_kill: true)
       if result.err =~ /command not found/i || result.err =~ /No such file or directory/i || result.err =~ /currently not installed/i
         raise TextExtractor::NotInstalledExtension.new(result.err)
       end

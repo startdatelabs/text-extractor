@@ -31,7 +31,7 @@ if `uname -a`.include?('Ubuntu')
   dependences = {
     'poppler-utils' => '0.24.5',
     'poppler-data' => '0.4.6',
-    'libreoffice' => '5.3.1',
+    'libreoffice' => '6.0.4',
     'graphicsmagick' => '1.3.18',
     'tesseract-ocr' => '3.03.02',
     'tesseract-ocr-eng' => '3.02',
@@ -74,7 +74,7 @@ else
     'lynx' => '2.8.8rel.2_1'
   }
   dependences_cask = {
-    'libreoffice' => '5.3.1'
+    'libreoffice' => '6.0.4'
   }
   versions = `brew list --versions`.split(/\n/)
   command = 'brew install'

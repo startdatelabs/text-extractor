@@ -21,14 +21,9 @@ module TextExtractor
       def docx_has_image?(original_file_path)
         output_folder = temp_folder_for_parsed
         run_shell("unzip '#{ original_file_path }' -d #{ output_folder } > /dev/null")
-
-        media_folder = "#{ output_folder }/word/media/"
-        if File.directory?(media_folder)
-          ::FileUtils.rm_rf(media_folder)
-          true
-        else
-          false
-        end
+        has_image = File.directory?("#{ output_folder }/word/media/")
+        ::FileUtils.rm_rf(output_folder)
+        has_image
       end
 
       def self.formats

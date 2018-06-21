@@ -9,22 +9,24 @@ module TextExtractor
 
         if parsed_text.length < TextExtractor.configuration.min_text_length
           # png_pathes = extract_images(original_file_path)
-          png_pathes = extract_to_ppm_from_pdf(original_file_path)
+          output_folder = temp_folder_for_parsed
+          png_pathes = extract_to_ppm_from_pdf(original_file_path, output_folder)
           parsed_text = extract_text_from_image(png_pathes)
+          ::FileUtils.rm_rf(output_folder)
         end
 
         parsed_text
       end
 
       private
+
       def extract_as_text_from_pdf(original_file_path)
         run_shell(%{pdftotext -enc UTF-8 #{ to_shell(original_file_path) } #{ to_shell(text_file_path) }})
 
         extract_text_from_txt(text_file_path)
       end
 
-      def extract_to_ppm_from_pdf(original_file_path)
-        output_folder = temp_folder_for_parsed
+      def extract_to_ppm_from_pdf(original_file_path, output_folder)
         run_shell(%{pdftoppm -r 300 -gray #{ to_shell(original_file_path) } #{ File.join(output_folder, 'temp_file') }})
         ::Dir["#{ output_folder }/*"]
       end

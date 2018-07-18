@@ -15,10 +15,18 @@ def need_install(version, require_version)
   end
 end
 
+module InstallFromSourceCode
+  def self.odt2txt
+    `wget https://github.com/dstosberg/odt2txt/archive/master.zip`
+    `unzip master.zip`
+    `cd odt2txt-master && ./configure && make && make install`
+  end
+end
+
 # if ENV['CI'].nil?
 puts '****************'
 
-if `uname -a`.include?('Ubuntu')
+if `which apt-get`.length > 0 # Ubuntu
   ubuntu_repositories = %w{ppa:libreoffice/ppa}
 
   ubuntu_repositories.each do |rep|
@@ -58,7 +66,7 @@ if `uname -a`.include?('Ubuntu')
       system("#{ command } #{ tool }") if need_install(version, require_version)
     end
   end
-else
+elsif `which brew`.length > 0 # Mac OS X with installed brew
   `brew cleanup`
 
   dependences = {
@@ -100,6 +108,43 @@ else
       system("#{ command } #{ tool }") if v && need_install(v[1], require_version)
     else
       system("#{ command } #{ tool }")
+    end
+  end
+else # docker alpine
+  dependences = {
+    'poppler-utils' => '0.24.5',
+    #'poppler-data' => '0.4.6',
+    'libreoffice' => '6.0.4',
+    'graphicsmagick' => '1.3.18',
+    'tesseract-ocr' => '3.03.02',
+    #'tesseract-ocr-eng' => '3.02',
+    'antiword' => '0.37',
+    #'unrtf' => '0.21.5',
+    'unzip' => '6.0',
+    #'odt2txt' => '0.4',
+    'ghostscript' => '9.14',
+    'pdftk' => '2.01',
+    'perl' => '5.18.2',
+    #'lynx-cur' => '2.8.9'
+  }
+
+  #poppler-data
+  #tesseract-ocr-eng
+  #unrtf
+  #odt2txt
+  #lynx-cur
+
+  command = "apk add --no-cache"
+
+  dependences.each do |tool, require_version|
+    string_version = `apk version #{ tool }`
+    regexp = require_version.count('.') == 1 ? /(\d+)\.(\d+)/ : /(\d+)\.(\d+)\.(\d+)/
+    version = string_version.match(regexp).to_s
+
+    if version.empty?
+      system("#{ command } #{ tool }")
+    elsif require_version
+      system("#{ command } #{ tool }") if need_install(version, require_version)
     end
   end
 end

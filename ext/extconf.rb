@@ -37,20 +37,20 @@ if `which apt-get`.length > 0 # Ubuntu
   system("echo '#{ ENV['PASSWORD'] }' | sudo -S apt-get update")
 
   dependences = {
-    'poppler-utils' => '0.24.5',
-    'poppler-data' => '0.4.6',
-    'libreoffice' => '6.0.4',
-    'graphicsmagick' => '1.3.18',
-    'tesseract-ocr' => '3.03.02',
-    'tesseract-ocr-eng' => '3.02',
+    'poppler-utils' => '0.41.0',
+    'poppler-data' => '0.4.7-7',
+    'libreoffice' => '6.2.5',
+    'graphicsmagick' => '1.3.23',
+    'tesseract-ocr' => '3.04.01',
+    'tesseract-ocr-eng' => '3.04.00',
     'antiword' => '0.37',
-    'unrtf' => '0.21.5',
+    'unrtf' => '0.21.9',
     'unzip' => '6.0',
-    'odt2txt' => '0.4',
-    'ghostscript' => '9.14',
-    'pdftk' => '2.01',
-    'perl' => '5.18.2',
-    'lynx-cur' => '2.8.9'
+    'odt2txt' => '0.5',
+    'ghostscript' => '9.26',
+    'pdftk' => '2.02',
+    'perl' => '5.22.1',
+    'lynx' => '2.8.9'
   }
 
   command = "echo '#{ ENV['PASSWORD'] }' | sudo -S apt-get install -y"
@@ -111,27 +111,26 @@ elsif `which brew`.length > 0 # Mac OS X with installed brew
   end
 else # docker alpine
   dependences = {
-    'poppler-utils' => '0.24.5',
+    'poppler-utils' => '0.41.0',
     #'poppler-data' => '0.4.6',
-    'libreoffice' => '6.0.4',
-    'graphicsmagick' => '1.3.18',
-    'tesseract-ocr' => '3.03.02',
+    'libreoffice' => '6.2.5',
+    'graphicsmagick' => '1.3.23',
+    'tesseract-ocr' => '3.04.01',
     #'tesseract-ocr-eng' => '3.02',
     'antiword' => '0.37',
     #'unrtf' => '0.21.5',
     'unzip' => '6.0',
     #'odt2txt' => '0.4',
-    'ghostscript' => '9.14',
-    'pdftk' => '2.01',
-    'perl' => '5.18.2',
-    #'lynx-cur' => '2.8.9'
+    'ghostscript' => '9.26',
+    'pdftk' => '2.02',
+    'perl' => '5.22.1',
+    'lynx' => '2.8.9'
   }
 
   #poppler-data
   #tesseract-ocr-eng
   #unrtf
   #odt2txt
-  #lynx-cur
 
   command = "apk add --no-cache"
 

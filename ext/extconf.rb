@@ -68,6 +68,7 @@ if `which apt-get`.length > 0 # Ubuntu
   end
 elsif `which brew`.length > 0 # Mac OS X with installed brew
   `brew cleanup`
+  `brew update`
 
   dependences = {
     'poppler' => '0.79.0',
@@ -85,29 +86,27 @@ elsif `which brew`.length > 0 # Mac OS X with installed brew
     'libreoffice' => '6.2.5'
   }
   versions = `brew list --versions`.split(/\n/)
-  command = 'brew install'
 
   dependences.each do |tool, require_version|
     version = versions.find { |v| v.include?(tool) }
     if version
       v = version.split(' ')
-      system("#{ command } #{ tool }") if v && need_install(v[1], require_version)
+      system("brew upgrade #{ tool }") if v && need_install(v[1], require_version)
     else
-      system("#{ command } #{ tool }")
+      system("brew install #{ tool }")
     end
   end
 
   `brew cask cleanup`
   versions = `brew cask list --versions`.split(/\n/)
-  command = 'brew cask install'
 
   dependences_cask.each do |tool, require_version|
     version = versions.find { |v| v.include?(tool) }
     if version
       v = version.split(' ')
-      system("#{ command } #{ tool }") if v && need_install(v[1], require_version)
+      system("brew cask upgrade #{ tool }") if v && need_install(v[1], require_version)
     else
-      system("#{ command } #{ tool }")
+      system("brew cask install #{ tool }")
     end
   end
 else # docker alpine

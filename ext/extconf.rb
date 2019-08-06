@@ -70,19 +70,19 @@ elsif `which brew`.length > 0 # Mac OS X with installed brew
   `brew cleanup`
 
   dependences = {
-    'poppler' => '0.53.0',
-    'graphicsmagick' => '1.3.25',
-    'tesseract' => '3.05.00',
+    'poppler' => '0.79.0',
+    'graphicsmagick' => '1.3.33',
+    'tesseract' => '4.1.0',
     'antiword' => '0.37',
-    'unrtf' => '0.21.9',
+    'unrtf' => '0.21.10',
     'unzip' => '6.0_2',
     'odt2txt' => '0.5',
-    'ghostscript' => '9.21',
-    'perl' => '5.24.0',
-    'lynx' => '2.8.8rel.2_1'
+    'ghostscript' => '9.27',
+    'perl' => '5.30.0',
+    'lynx' => '2.8.9rel.1'
   }
   dependences_cask = {
-    'libreoffice' => '6.0.4'
+    'libreoffice' => '6.2.5'
   }
   versions = `brew list --versions`.split(/\n/)
   command = 'brew install'
